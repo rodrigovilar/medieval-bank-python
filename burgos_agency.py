@@ -1,17 +1,20 @@
 class BurgosAgency:
 
+    name = None
+    manager = None
+
     @staticmethod
     def setName(name):
-        pass
+        BurgosAgency.name = name
 
     @staticmethod
     def getName():
-        return None
+        return BurgosAgency.name
 
     @staticmethod
     def setManager(manager):
-        pass
+        BurgosAgency.manager = manager
 
     @staticmethod
     def getManager():
-        return None
+        return BurgosAgency.manager

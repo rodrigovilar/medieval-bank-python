@@ -1,4 +1,4 @@
-class BurgosBank:
+class BurgosAgency:
 
     @staticmethod
     def setName(name):

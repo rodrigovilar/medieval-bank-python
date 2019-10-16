@@ -2,4 +2,4 @@
 
 To run automated tests, type:
 
-python3 -m unittest test_burgos_bank.py
+python3 -m unittest test_burgos_agency.py

@@ -21,6 +21,14 @@ class TestAttendeeService(unittest.TestCase):
         searched_attendee = service.get_one(created_attendee.id)
         self.assertEquals(created_attendee, searched_attendee)
 
+    def t02_create_attendee_without_name(self):
+        attendee = Attendee()
+        try:
+            service.create(attendee)
+            self.fail("Accepted attendee without name")
+        except MedievalBankException as e:
+            self.assertEquals("Name is mandatory", e.message)
+
 
 if __name__ == '__main__':
     unittest.main()

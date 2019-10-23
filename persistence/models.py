@@ -5,4 +5,6 @@
 
 
 class Attendee:
+    id = None
     name = None
+    creation_date = None

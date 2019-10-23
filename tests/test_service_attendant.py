@@ -29,6 +29,19 @@ class TestAttendeeService(unittest.TestCase):
         except MedievalBankException as e:
             self.assertEquals("Name is mandatory", e.message)
 
+    def t03_attendee_name_duplicated(self):
+        attendee = Attendee()
+        attendee.name = "Ana"
+        service.create(attendee)
+
+        aux_attendee = Attendee()
+        aux_attendee.name = "Ana"
+        try:
+            service.create(aux_attendee)
+            self.fail("Created attendee with existent name")
+        except MedievalBankException as e:
+            self.assertEquals("Name already exists", e.message)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -9,6 +9,7 @@ class TestAttendeeService(unittest.TestCase):
     service = AttendeeService()
     EX_NAME = "A Name"
     EX_EMAIL = "asd@asd.com"
+    EX_SSN = "473-20-6799"
 
     def test01_create_attendee(self):
         created_attendee = helper.create_attendee(self.service, self.EX_NAME)
@@ -79,6 +80,14 @@ class TestAttendeeService(unittest.TestCase):
 
         searched_attendee = self.service.get_one(updated_attendee.id)
         self.assertEquals(updated_attendee, searched_attendee)
+
+    def test07_update_attendee_with_immutable_fields(self):
+        attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN)
+        attendee.ssn = "385-42-9044"
+
+        fail_message = "Test failed because the system accepted to update attendee with a new ssn"
+        expected_exception_message = "Attendee SSN is immutable"
+        helper.try_update_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
 
 
 if __name__ == '__main__':

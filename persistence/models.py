@@ -9,3 +9,4 @@ class Attendee:
     name = None
     creation_date = None
     email = None
+    ssn = None

@@ -7,6 +7,7 @@ from persistence.models import Attendee
 
 class TestAttendeeService(unittest.TestCase):
     service = AttendeeService()
+    EX_NAME = "A Name"
 
     def create_attendee(self, name):
         attendee = Attendee()
@@ -26,8 +27,7 @@ class TestAttendeeService(unittest.TestCase):
             self.assertEquals(expected_exception_message, e.message)
 
     def t01_create_attendee(self):
-        a_name = "A Name"
-        created_attendee = self.create_attendee(a_name)
+        created_attendee = self.create_attendee(self.EX_NAME)
 
         self.validate_attendee_creation(created_attendee)
 
@@ -41,29 +41,35 @@ class TestAttendeeService(unittest.TestCase):
         self.try_create_attendee_with_error(attendee, fail_message, expected_exception_message)
 
     def t03_attendee_name_duplicated(self):
-        a_name = "A Name"
         fail_message = "Test failed because the system accepted to create an attendee with an already existent name"
         expected_exception_message = "Attendee name cannot be duplicated"
-        self.create_attendee(a_name)
-        attendee2 = self.create_attendee(a_name)
+        self.create_attendee(self.EX_NAME)
+        attendee2 = self.create_attendee(self.EX_NAME)
         self.try_create_attendee_with_error(attendee2, fail_message, expected_exception_message)
 
     def t04_create_attendee_with_automatic_fields(self):
-        a_name = "A Name"
-
         attendee = Attendee()
-        attendee.name = a_name
+        attendee.name = self.EX_NAME
         attendee.id = 123
         fail_message = "Test failed because the system accepted to create attendee with id already set"
         expected_exception_message = "Attendee id cannot be set"
         self.try_create_attendee_with_error(attendee, fail_message, expected_exception_message)
 
         attendee2 = Attendee()
-        attendee2.name = a_name
+        attendee2.name = self.EX_NAME
         attendee2.creation_date = datetime.now()
         fail_message = "Test failed because the system accepted to create attendee with creation date already set"
         expected_exception_message = "Attendee creation date cannot be set"
         self.try_create_attendee_with_error(attendee2, fail_message, expected_exception_message)
+
+    def t05_create_attendee_with_invalid_regex(self):
+        attendee = Attendee()
+        attendee.name = self.EX_NAME
+        attendee.email = "aaa.asdasd#"
+
+        fail_message = "Test failed because the system accepted to create attendee with invalid e-mail"
+        expected_exception_message = "Attendee e-mail format is invalid"
+        self.try_create_attendee_with_error(attendee, fail_message, expected_exception_message)
 
 
 if __name__ == '__main__':

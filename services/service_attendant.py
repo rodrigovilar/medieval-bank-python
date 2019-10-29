@@ -6,3 +6,6 @@ class AttendeeService:
 
     def get_one(self, attendee_id):
         pass
+
+    def update(self, attendee):
+        pass

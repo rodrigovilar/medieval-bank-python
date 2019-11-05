@@ -15,3 +15,6 @@ class AttendeeService:
 
     def get_all (self):
         pass
+
+    def find_by_name(self):
+        pass

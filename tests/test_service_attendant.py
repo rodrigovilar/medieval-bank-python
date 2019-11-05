@@ -10,6 +10,7 @@ class TestAttendeeService(unittest.TestCase):
     EX_NAME = "A Name"
     EX_EMAIL = "asd@asd.com"
     EX_SSN = "473-20-6799"
+    UNKNOWN_ID = 202020
 
     def test01_create_attendee(self):
         created_attendee = helper.create_attendee(self.service, self.EX_NAME)
@@ -88,6 +89,24 @@ class TestAttendeeService(unittest.TestCase):
         fail_message = "Test failed because the system accepted to update attendee with a new ssn"
         expected_exception_message = "Attendee SSN is immutable"
         helper.try_update_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
+
+    def test08_update_attendee_with_unknown_id(self):
+        attendee_with_unknown_id = Attendee()
+
+        attendee_with_unknown_id.id = self.UNKNOWN_ID
+
+        fail_message = "Test failed because the system accepted to update attendee with an unknown ID"
+        expected_exception_message = "Attendee ID not found: " + self.UNKNOWN_ID
+        helper.try_update_attendee_with_error(self, self.service, attendee_with_unknown_id,
+                                              fail_message, expected_exception_message)
+
+        created_attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN)
+        created_attendee.id = self.UNKNOWN_ID
+        helper.try_update_attendee_with_error(self, self.service, attendee_with_unknown_id,
+                                              fail_message, expected_exception_message)
+
+    def test09_update_attendee_with_(self):
+        pass
 
 
 if __name__ == '__main__':

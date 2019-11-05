@@ -9,3 +9,6 @@ class AttendeeService:
 
     def update(self, attendee):
         pass
+
+    def delete (self, attendee):
+        pass

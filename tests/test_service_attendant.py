@@ -105,8 +105,11 @@ class TestAttendeeService(unittest.TestCase):
         helper.try_update_attendee_with_error(self, self.service, attendee_with_unknown_id,
                                               fail_message, expected_exception_message)
 
-    def test09_update_attendee_with_(self):
-        pass
+    def test09_update_attendee_without_name(self):
+        fail_message = "Test failed because the system accepted to create an attendee without name"
+        expected_exception_message = "Name is mandatory"
+        attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN)
+        helper.try_update_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
 
 
 if __name__ == '__main__':

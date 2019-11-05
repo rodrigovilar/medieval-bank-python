@@ -147,6 +147,16 @@ class TestAttendeeService(unittest.TestCase):
       
         attendee.email = self.EX_EMAIL("sdsdfa@gmail")
         helper.try_update_attendee_with_error(self, self.service, fail_message, expected_exception_message)
+    
+    def test13_deleteAttendee(self):
+        created_attendee = help.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)
+
+        self.service.delete(created_attendee)
+        fail_message = "Test failed because the system returned an unknown attendee"
+        expected_exception_message = "Unknown Atendee id: " + self.attendee.id
+
+        helper.try_get_one_attendee_with_error(self, self.service, fail_message, expected_exception_message)
+
 
 if __name__ == '__main__':
     unittest.main()

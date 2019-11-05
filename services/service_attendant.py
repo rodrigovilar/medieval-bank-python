@@ -12,3 +12,6 @@ class AttendeeService:
 
     def delete (self, attendee):
         pass
+
+    def get_all (self):
+        pass

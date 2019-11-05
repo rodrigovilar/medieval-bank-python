@@ -173,6 +173,17 @@ class TestAttendeeService(unittest.TestCase):
         expected_exception_message = "Null attendee"
         helper.try_delete_attendee_with_error(self, self.service, fail_message, expected_exception_message)
 
+    def test15_three_attendees(self):
+        attendee1 =  help.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL)
+        attendee2 = help.create_attendee(self.service, self.EX_OTHER_NAME)
+        attendee3 = help.create_attendee(self.service, "Thrid Name")
+
+        lista_attendees = self.service.get_all()
+        self.assertEquals(3, lista_attendees.size())
+        self.assertEquals(attendee1,lista_attendees[0])
+        self.assertEquals(attendee2,lista_attendees[1])
+        self.assertEquals(attendee3,lista_attendees[2])
+        
 
 if __name__ == '__main__':
     unittest.main()

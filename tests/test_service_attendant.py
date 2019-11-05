@@ -8,6 +8,7 @@ from persistence.models import Attendee
 class TestAttendeeService(unittest.TestCase):
     service = AttendeeService()
     EX_NAME = "A Name"
+    EX_OTHER_NAME = "Other Name"
     EX_EMAIL = "asd@asd.com"
     EX_SSN = "473-20-6799"
     UNKNOWN_ID = 202020
@@ -68,10 +69,9 @@ class TestAttendeeService(unittest.TestCase):
 
     def test06_update_all_editable_fields(self):
         new_email = "new@mail.com"
-        new_name = "Other Name"
 
         attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL)
-        attendee.name = new_name
+        attendee.name = self.EX_OTHER_NAME
         attendee.email = new_email
 
         updated_attendee = self.service.update(attendee)
@@ -106,10 +106,19 @@ class TestAttendeeService(unittest.TestCase):
                                               fail_message, expected_exception_message)
 
     def test09_update_attendee_without_name(self):
-        fail_message = "Test failed because the system accepted to create an attendee without name"
+        fail_message = "Test failed because the system accepted to update an attendee without name"
         expected_exception_message = "Name is mandatory"
         attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN)
         helper.try_update_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
+
+    def test10_update_attendee_name_duplicated(self):
+        helper.create_attendee(self.service, self.EX_NAME)
+        attendee2 = helper.create_attendee(self.service, self.EX_OTHER_NAME)
+        attendee2.name = self.EX_NAME
+
+        fail_message = "Test failed because the system accepted to update an attendee with an already existent name"
+        expected_exception_message = "Attendee name cannot be duplicated"
+        helper.try_update_attendee_with_error(self, self.service, attendee2, fail_message, expected_exception_message)
 
 
 if __name__ == '__main__':

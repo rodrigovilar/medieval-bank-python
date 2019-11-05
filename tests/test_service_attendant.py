@@ -129,6 +129,25 @@ class TestAttendeeService(unittest.TestCase):
         expected_exception_message = "Attendee name cannot be duplicated"
         helper.try_update_attendee_with_error(self, self.service, fail_message, expected_exception_message)
 
+    def test12_update_atendee_WithInvalid_Email(self):
+        created_attendee = help.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)
+
+        fail_message = "Test failed because the system accepted to update atendee with invalid e-mail format"
+        expected_exception_message = "Attendee e-mail format is invalid"
+        helper.try_update_attendee_with_error(self, self.service, fail_message, expected_exception_message)
+
+        attendee.email = self.EX_EMAIL("sdsdfa.sds#")
+        helper.try_update_attendee_with_error(self, self.service, fail_message, expected_exception_message)
+
+        attendee.email = self.EX_EMAIL("sdsdfa@@gmail.com")
+        helper.try_update_attendee_with_error(self, self.service, fail_message, expected_exception_message)
+
+        attendee.email = self.EX_EMAIL("sdsdfa#gmail.com")
+        helper.try_update_attendee_with_error(self, self.service, fail_message, expected_exception_message)
+      
+        attendee.email = self.EX_EMAIL("sdsdfa@gmail")
+        helper.try_update_attendee_with_error(self, self.service, fail_message, expected_exception_message)
+
 if __name__ == '__main__':
     unittest.main()
 

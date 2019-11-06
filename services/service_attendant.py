@@ -1,3 +1,5 @@
+from datetime import datetime
+from persistence.models import Attendee
 
 
 class AttendeeService:
@@ -10,10 +12,10 @@ class AttendeeService:
     def update(self, attendee):
         pass
 
-    def delete (self, attendee):
+    def delete(self, attendee):
         pass
 
-    def get_all (self):
+    def get_all(self):
         pass
 
     def find_by_name(self):

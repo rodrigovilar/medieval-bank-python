@@ -3,6 +3,7 @@ from datetime import datetime
 from services.service_attendant import AttendeeService
 from .helpers import TestAttendeeServiceHelper as helper
 from persistence.models import Attendee
+from errors.messages import AttendeeMessages
 from time import sleep
 
 
@@ -30,9 +31,9 @@ class TestAttendeeService(unittest.TestCase):
 
     def test02_create_attendee_without_name(self):
         fail_message = "Test failed because the system accepted to create an attendee without name"
-        expected_exception_message = "Name is mandatory"
         attendee = Attendee()
-        helper.try_create_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
+        helper.try_create_attendee_with_error(self, self.service, attendee, fail_message,
+                                              AttendeeMessages.NON_NULLABLE_NAME)
 
     def test03_attendee_name_duplicated(self):
         fail_message = "Test failed because the system accepted to create an attendee with an already existent name"

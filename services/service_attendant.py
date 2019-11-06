@@ -1,6 +1,8 @@
 from datetime import datetime
 from persistence.models import Attendee, engine
 from sqlalchemy.orm import sessionmaker
+from errors.exceptions import MedievalBankException
+from errors.messages import AttendeeMessages
 
 Session = sessionmaker(bind=engine)
 
@@ -15,8 +17,11 @@ class AttendeeService:
         self.session.close()
 
     def create(self, attendee):
+        if not attendee.name:
+            raise MedievalBankException(AttendeeMessages.NON_NULLABLE_NAME)
         self.session.add(attendee)
         self.session.commit()
+
         return attendee
 
     def get_one(self, attendee_id):

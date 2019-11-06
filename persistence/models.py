@@ -14,8 +14,8 @@ class Attendee(Base):
     __tablename__ = 'attendee_db'
 
     id = Column(Integer, primary_key=True)
-    name = Column('name', String(255))
-    creation_date = Column('creation_date', DateTime, default=datetime.utcnow)
+    name = Column('name', String(255), nullable=False, unique=True)
+    creation_date = Column('creation_date', DateTime, default=datetime.utcnow, nullable=False)
     email = Column('email', String(255))
     ssn = Column('ssn', String(255))
 

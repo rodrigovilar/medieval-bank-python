@@ -5,6 +5,7 @@ from .helpers import TestAttendeeServiceHelper as helper
 from persistence.models import Attendee
 from time import sleep
 
+
 class TestAttendeeService(unittest.TestCase):
     service = AttendeeService()
     EX_NAME = "A Name"
@@ -13,10 +14,16 @@ class TestAttendeeService(unittest.TestCase):
     EX_SSN = "473-20-6799"
     UNKNOWN_ID = 202020
 
+    def setUp(self):
+        self.service.open_session()
+
+    def tearDown(self):
+        self.service.close_session()
+
     def test01_create_attendee(self):
         created_attendee = helper.create_attendee(self.service, self.EX_NAME)
 
-        helper.validate_attendee_creation(self, self.service, created_attendee)
+        helper.validate_attendee_creation(self, self.EX_NAME, created_attendee)
 
         searched_attendee = self.service.get_one(created_attendee.id)
         self.assertEquals(created_attendee, searched_attendee)

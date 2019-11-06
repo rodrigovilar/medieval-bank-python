@@ -2,8 +2,9 @@ from sqlalchemy import Column, Integer, String, create_engine, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
+from persistence import db_path
 
-engine = create_engine('sqlite:///burgos.db', echo=True)
+engine = create_engine('sqlite:///' + db_path, echo=True)
 Session = sessionmaker(bind=engine)
 Base = declarative_base()
 

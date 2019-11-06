@@ -36,9 +36,9 @@ class TestAttendeeServiceHelper:
             tester.assertEquals(expected_exception_message, e.message)
     
     @staticmethod
-    def try_get_one_attendee_with_error(tester, service, attendee, fail_message, expected_exception_message):
+    def try_get_one_attendee_with_error(tester, service, attendee_id, fail_message, expected_exception_message):
         try:
-            service.update(attendee)
+            service.update(attendee_id)
             tester.fail(fail_message)
         except MedievalBankException as e:
             tester.assertEquals(expected_exception_message, e.message)

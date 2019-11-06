@@ -121,86 +121,87 @@ class TestAttendeeService(unittest.TestCase):
         helper.try_update_attendee_with_error(self, self.service, attendee2, fail_message, expected_exception_message)
         
     def test11_update_attendee_WindthAutomaticField(self):
-        created_attendee = help.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)
+        created_attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)
         sleep(0.01)
         created_attendee.creation_date = datetime.now()
 
         fail_message = "Test failed because the system accepted to update an attendee with an already existent name"
         expected_exception_message = "Attendee name cannot be duplicated"
-        helper.try_update_attendee_with_error(self, self.service, fail_message, expected_exception_message)
+        helper.try_update_attendee_with_error(self, self.service, created_attendee, fail_message,
+                                              expected_exception_message)
 
-    def test12_update_atendee_WithInvalid_Email(self):
-        created_attendee = help.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)
+    def test12_update_attendee_with_invalid_email(self):
+        attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)
 
-        fail_message = "Test failed because the system accepted to update atendee with invalid e-mail format"
+        fail_message = "Test failed because the system accepted to update attendee with invalid e-mail format"
         expected_exception_message = "Attendee e-mail format is invalid"
-        helper.try_update_attendee_with_error(self, self.service, fail_message, expected_exception_message)
 
-        attendee.email = self.EX_EMAIL("sdsdfa.sds#")
-        helper.try_update_attendee_with_error(self, self.service, fail_message, expected_exception_message)
+        attendee.email = "sdsdfa.sds#"
+        helper.try_update_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
 
-        attendee.email = self.EX_EMAIL("sdsdfa@@gmail.com")
-        helper.try_update_attendee_with_error(self, self.service, fail_message, expected_exception_message)
+        attendee.email = "sdsdfa@@gmail.com"
+        helper.try_update_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
 
-        attendee.email = self.EX_EMAIL("sdsdfa#gmail.com")
-        helper.try_update_attendee_with_error(self, self.service, fail_message, expected_exception_message)
+        attendee.email = "sdsdfa#gmail.com"
+        helper.try_update_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
       
-        attendee.email = self.EX_EMAIL("sdsdfa@gmail")
-        helper.try_update_attendee_with_error(self, self.service, fail_message, expected_exception_message)
+        attendee.email = "sdsdfa@gmail"
+        helper.try_update_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
     
-    def test13_deleteAttendee(self):
-        created_attendee = help.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)
+    def test13_delete_attendee(self):
+        created_attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)
 
         self.service.delete(created_attendee)
-        fail_message = "Test failed because the system returned an unknown attendee"
-        expected_exception_message = "Unknown Atendee id: " + self.attendee.id
 
-        helper.try_get_one_attendee_with_error(self, self.service, fail_message, expected_exception_message)
+        fail_message = "Test failed because the system returned an unknown attendee"
+        expected_exception_message = "Unknown Attendee id: " + str(created_attendee.id)
+        helper.try_get_one_attendee_with_error(self, self.service, created_attendee.id, fail_message,
+                                               expected_exception_message)
 
     def test14_delete_unknown_attendee(self):
-        created_attendee = help.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)
-
-        attendee_delete_unknown.attendee.id = Attendee()
-        attendee_delete_unknown.attendee.id.id= self.UNKNOWN_ID
+        created_attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)
+        created_attendee.id = self.UNKNOWN_ID
 
         self.service.delete(created_attendee)
-        fail_message = "Test failed because the system accepted to delete atendee with an unknown id"
-        expected_exception_message = "Atendee id not found: " + self.attendee.id
+        fail_message = "Test failed because the system accepted to delete attendee with an unknown id"
+        expected_exception_message = "Attendee id not found: " + str(self.UNKNOWN_ID)
 
-        helper.try_delete_attendee_with_error(self, self.service, fail_message, expected_exception_message)
+        helper.try_delete_attendee_with_error(self, self.service, created_attendee, fail_message,
+                                              expected_exception_message)
 
-        fail_message = "Test failed because the system accepted to delete a null atendee"
+        fail_message = "Test failed because the system accepted to delete a null attendee"
         expected_exception_message = "Null attendee"
-        helper.try_delete_attendee_with_error(self, self.service, fail_message, expected_exception_message)
+        helper.try_delete_attendee_with_error(self, self.service, None, fail_message, expected_exception_message)
 
     def test15_three_attendees(self):
-        attendee1 =  help.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL)
-        attendee2 = help.create_attendee(self.service, self.EX_OTHER_NAME)
-        attendee3 = help.create_attendee(self.service, "Thrid Name")
+        attendee1 = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL)
+        attendee2 = helper.create_attendee(self.service, self.EX_OTHER_NAME)
+        attendee3 = helper.create_attendee(self.service, "Third Name")
 
-        lista_attendees = self.service.get_all()
-        self.assertEquals(3, lista_attendees.size())
-        self.assertEquals(attendee1,lista_attendees[0])
-        self.assertEquals(attendee2,lista_attendees[1])
-        self.assertEquals(attendee3,lista_attendees[2])
+        attendee_list = self.service.get_all()
+        self.assertEquals(3, attendee_list.size())
+        self.assertEquals(attendee1,attendee_list[0])
+        self.assertEquals(attendee2,attendee_list[1])
+        self.assertEquals(attendee3,attendee_list[2])
 
     def test16_filter_attendees(self):
-        attendee1 = help.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL)
-        attendee2 = help.create_attendee(self.service, self.EX_OTHER_NAME)
-        attendee3 = help.create_attendee(self.service, "Thrid Name")
+        attendee1 = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL)
+        attendee2 = helper.create_attendee(self.service, self.EX_OTHER_NAME)
+        attendee3 = helper.create_attendee(self.service, "Third Name")
 
-        lista_comp_attendees = self.service.find_by_name("Name")
-        self.assertEquals(1, lista_comp_attendees.size())
-        self.assertEquals(attendee3, lista_comp_attendees[0])
+        attendee_list = self.service.find_by_name("Name")
+        self.assertEquals(1, attendee_list.size())
+        self.assertEquals(attendee3, attendee_list[0])
 
-        lista_comp_attendees = self.service.find_by_name("Name")
-        self.assertEquals(3, lista_comp_attendees.size())
-        self.assertEquals(attendee1, lista_comp_attendees[0])
-        self.assertEquals(attendee2, lista_comp_attendees[1])
-        self.assertEquals(attendee3, lista_comp_attendees[2])
+        attendee_list = self.service.find_by_name("Name")
+        self.assertEquals(3, attendee_list.size())
+        self.assertEquals(attendee1, attendee_list[0])
+        self.assertEquals(attendee2, attendee_list[1])
+        self.assertEquals(attendee3, attendee_list[2])
 
-        lista_comp_attendees = self.service.find_by_name("Jhon")
-        self.assertEquals(0,lista_comp_attendees.size)
+        attendee_list = self.service.find_by_name("Jhon")
+        self.assertEquals(0,attendee_list.size)
+
 
 if __name__ == '__main__':
     unittest.main()

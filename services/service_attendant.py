@@ -35,7 +35,7 @@ class AttendeeService:
     def update(self, attendee):
         attendeeAtual = self.get_one(attendee.id)
 
-        if attendeeAtual:
+        if attendeeAtual is None:
             raise MedievalBankException("O obejeto não cadastrado!")
         attendeeAtual.name = attendee.name
         attendeeAtual.email = attendee.email

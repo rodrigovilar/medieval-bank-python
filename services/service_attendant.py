@@ -33,7 +33,13 @@ class AttendeeService:
         return attendee
 
     def update(self, attendee):
-        pass
+        attendeeAtual = self.get_one(attendee.id)
+
+        if attendeeAtual:
+            raise MedievalBankException("O obejeto não cadastrado!")
+        attendeeAtual.name = attendee.name
+        attendeeAtual.email = attendee.email
+        return attendeeAtual
 
     def delete(self, attendee):
         pass

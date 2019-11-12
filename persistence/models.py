@@ -20,6 +20,11 @@ class Attendee(Base):
     ssn = Column('ssn', String(255))
 
 
+def tear_down_test_db():
+    Base.metadata.drop_all(engine)
+    Base.metadata.create_all(engine)
+
+
 if __name__ == '__main__':
     Base.metadata.create_all(engine)
 

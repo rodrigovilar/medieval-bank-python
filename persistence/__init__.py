@@ -1,4 +1,7 @@
 import os
 
 dirpath = os.path.dirname(__file__)
-db_path = dirpath.replace("\\", "/") + "/burgos.db"
+dirpath = dirpath.replace("\\", "/")
+
+test_db_path = dirpath + "/test.db"
+db_path = dirpath + "/burgos.db"

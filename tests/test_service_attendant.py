@@ -2,9 +2,15 @@ import unittest
 from datetime import datetime
 from services.service_attendant import AttendeeService
 from .helpers import TestAttendeeServiceHelper as helper
-from persistence.models import Attendee
+from persistence.models import Attendee, Base, tear_down_test_db
 from errors.messages import AttendeeMessages
 from time import sleep
+
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
+from datetime import datetime
+from persistence import test_db_path
 
 
 class TestAttendeeService(unittest.TestCase):
@@ -19,6 +25,7 @@ class TestAttendeeService(unittest.TestCase):
         self.service.open_session()
 
     def tearDown(self):
+        tear_down_test_db()
         self.service.close_session()
 
     def test01_create_attendee(self):

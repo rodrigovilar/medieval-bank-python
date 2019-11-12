@@ -44,10 +44,10 @@ class TestAttendeeService(unittest.TestCase):
 
     def test03_attendee_name_duplicated(self):
         fail_message = "Test failed because the system accepted to create an attendee with an already existent name"
-        expected_exception_message = "Attendee name cannot be duplicated"
         helper.create_attendee(self.service, self.EX_NAME)
-        attendee2 = helper.create_attendee(self.service, self.EX_NAME)
-        helper.try_create_attendee_with_error(self, self.service, attendee2, fail_message, expected_exception_message)
+        attendee2 = Attendee()
+        attendee2.name = self.EX_NAME
+        helper.try_create_attendee_with_error(self, self.service, attendee2, fail_message, AttendeeMessages.UNIQUE_NAME)
 
     def test04_create_attendee_with_automatic_fields(self):
         attendee = Attendee()

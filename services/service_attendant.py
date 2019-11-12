@@ -19,6 +19,9 @@ class AttendeeService:
     def create(self, attendee):
         if not attendee.name:
             raise MedievalBankException(AttendeeMessages.NON_NULLABLE_NAME)
+        exists_by_name = self.session.query(Attendee).filter_by(name=attendee.name)
+        if len(exists_by_name.all()) > 0:
+            raise MedievalBankException(AttendeeMessages.UNIQUE_NAME)
         self.session.add(attendee)
         self.session.commit()
 

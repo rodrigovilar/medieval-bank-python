@@ -9,20 +9,20 @@ Session = sessionmaker(bind=engine)
 
 
 class AttendeeService:
-    session = None
-    mail_regex = '/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i'
+    _session = None
+    _MAIL_REGEX = r'/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i'
 
     def open_session(self):
-        self.session = Session()
+        self._session = Session()
 
     def close_session(self):
-        self.session.close()
+        self._session.close()
 
     def create(self, attendee):
         if not attendee.name:
             raise MedievalBankException(AttendeeMessages.NON_NULLABLE_NAME)
 
-        exists_by_name = self.session.query(Attendee).filter_by(name=attendee.name)
+        exists_by_name = self._session.query(Attendee).filter_by(name=attendee.name)
         if len(exists_by_name.all()) > 0:
             raise MedievalBankException(AttendeeMessages.UNIQUE_NAME)
 
@@ -31,14 +31,18 @@ class AttendeeService:
         elif attendee.creation_date is not None:
             raise MedievalBankException(AttendeeMessages.IMMUTABLE_CREATION_DATE)
 
-        self.session.add(attendee)
-        self.session.commit()
+        if attendee.email:
+            if not re.match(self._MAIL_REGEX, attendee.email):
+                raise MedievalBankException(AttendeeMessages.WRONG_FORMAT_EMAIL)
+
+        self._session.add(attendee)
+        self._session.commit()
 
         return attendee
 
     def get_one(self, attendee_id):
-        attendee = self.session.query(Attendee).get(attendee_id)
-        self.session.expunge(attendee)
+        attendee = self._session.query(Attendee).get(attendee_id)
+        self._session.expunge(attendee)
         return attendee
 
     def update(self, attendee):

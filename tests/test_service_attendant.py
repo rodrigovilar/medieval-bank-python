@@ -68,17 +68,16 @@ class TestAttendeeService(unittest.TestCase):
         attendee.email = "aaa.asdasd#"
 
         fail_message = "Test failed because the system accepted to create attendee with invalid e-mail"
-        expected_exception_message = "Attendee e-mail format is invalid"
-        helper.try_create_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
+        helper.try_create_attendee_with_error(self, self.service, attendee, fail_message, AttendeeMessages.WRONG_FORMAT_EMAIL)
 
         attendee.email = "asdsad@@email.com"
-        helper.try_create_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
+        helper.try_create_attendee_with_error(self, self.service, attendee, fail_message, AttendeeMessages.WRONG_FORMAT_EMAIL)
 
         attendee.email = "asdsad#email.com"
-        helper.try_create_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
+        helper.try_create_attendee_with_error(self, self.service, attendee, fail_message, AttendeeMessages.WRONG_FORMAT_EMAIL)
 
         attendee.email = "asdsad@email"
-        helper.try_create_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
+        helper.try_create_attendee_with_error(self, self.service, attendee, fail_message, AttendeeMessages.WRONG_FORMAT_EMAIL)
 
     def test06_update_all_editable_fields(self):
         new_email = "new@mail.com"

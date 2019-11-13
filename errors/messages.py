@@ -29,6 +29,12 @@ class ImmutableField(ErrorMessage, FieldError):
         self.message = self.field + " cannot be set"
 
 
+class WrongRegexField(ErrorMessage, FieldError):
+    def __init__(self, field):
+        self.field = field
+        self.message = self.field + " format is invalid"
+
+
 class UniqueField(ErrorMessage, FieldError):
     def __init__(self, field):
         self.field = field
@@ -40,3 +46,4 @@ class AttendeeMessages(ErrorMessage):
     IMMUTABLE_ID = ImmutableField("ID").message
     IMMUTABLE_CREATION_DATE = ImmutableField("Creation Date").message
     UNIQUE_NAME = UniqueField("Name").message
+    WRONG_FORMAT_EMAIL = WrongRegexField("E-mail").message

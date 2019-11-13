@@ -54,15 +54,13 @@ class TestAttendeeService(unittest.TestCase):
         attendee.name = self.EX_NAME
         attendee.id = 123
         fail_message = "Test failed because the system accepted to create attendee with id already set"
-        expected_exception_message = "Attendee id cannot be set"
-        helper.try_create_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
+        helper.try_create_attendee_with_error(self, self.service, attendee, fail_message, AttendeeMessages.IMMUTABLE_ID)
 
         attendee2 = Attendee()
         attendee2.name = self.EX_NAME
         attendee2.creation_date = datetime.now()
         fail_message = "Test failed because the system accepted to create attendee with creation date already set"
-        expected_exception_message = "Attendee creation date cannot be set"
-        helper.try_create_attendee_with_error(self, self.service, attendee2, fail_message, expected_exception_message)
+        helper.try_create_attendee_with_error(self, self.service, attendee2, fail_message, AttendeeMessages.IMMUTABLE_CREATION_DATE)
 
     def test05_create_attendee_with_invalid_regex(self):
         attendee = Attendee()

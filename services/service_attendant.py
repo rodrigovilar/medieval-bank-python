@@ -3,12 +3,14 @@ from persistence.models import Attendee, engine
 from sqlalchemy.orm import sessionmaker
 from errors.exceptions import MedievalBankException
 from errors.messages import AttendeeMessages
+import re
 
 Session = sessionmaker(bind=engine)
 
 
 class AttendeeService:
     session = None
+    mail_regex = '/^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i'
 
     def open_session(self):
         self.session = Session()
@@ -19,9 +21,16 @@ class AttendeeService:
     def create(self, attendee):
         if not attendee.name:
             raise MedievalBankException(AttendeeMessages.NON_NULLABLE_NAME)
+
         exists_by_name = self.session.query(Attendee).filter_by(name=attendee.name)
         if len(exists_by_name.all()) > 0:
             raise MedievalBankException(AttendeeMessages.UNIQUE_NAME)
+
+        if attendee.id is not None:
+            raise MedievalBankException(AttendeeMessages.IMMUTABLE_ID)
+        elif attendee.creation_date is not None:
+            raise MedievalBankException(AttendeeMessages.IMMUTABLE_CREATION_DATE)
+
         self.session.add(attendee)
         self.session.commit()
 

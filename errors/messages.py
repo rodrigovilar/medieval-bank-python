@@ -20,30 +20,42 @@ class FieldError:
 class NonNullableField(ErrorMessage, FieldError):
     def __init__(self, field):
         self.field = field
-        self.message = self.field + " is mandatory"
+        self.message = f"{self.field} is mandatory"
 
 
 class ImmutableField(ErrorMessage, FieldError):
     def __init__(self, field):
         self.field = field
-        self.message = self.field + " cannot be set"
+        self.message = f"{self.field} cannot be set"
 
 
 class WrongRegexField(ErrorMessage, FieldError):
     def __init__(self, field):
         self.field = field
-        self.message = self.field + " format is invalid"
+        self.message = f"{self.field} format is invalid"
 
 
 class UniqueField(ErrorMessage, FieldError):
     def __init__(self, field):
         self.field = field
-        self.message = self.field + " cannot be duplicated"
+        self.message = f"{self.field} cannot be duplicated"
+
+
+class UnknownField(ErrorMessage, FieldError):
+    def __init__(self, field, _class, field_value):
+        self.field = field
+        self.message = f"Unknown {_class} with {field}: {field_value}"
 
 
 class AttendeeMessages(ErrorMessage):
+    attendee_id = None
+
+    def __init__(self, attendee_id=None):
+        self.attendee_id = attendee_id
+
     NON_NULLABLE_NAME = NonNullableField("Name").message
     IMMUTABLE_ID = ImmutableField("ID").message
     IMMUTABLE_CREATION_DATE = ImmutableField("Creation Date").message
     UNIQUE_NAME = UniqueField("Name").message
     WRONG_FORMAT_EMAIL = WrongRegexField("E-mail").message
+    UNKNOWN_ID = UnknownField("ID", "Attendee", attendee_id).message

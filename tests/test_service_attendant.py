@@ -17,7 +17,7 @@ class TestAttendeeService(unittest.TestCase):
     service = AttendeeService()
     EX_NAME = "A Name"
     EX_OTHER_NAME = "Other Name"
-    EX_EMAIL = "asd@asd.com"
+    EX_EMAIL = "asd@gmail.com"
     EX_SSN = "473-20-6799"
     UNKNOWN_ID = 202020
 
@@ -166,9 +166,8 @@ class TestAttendeeService(unittest.TestCase):
         self.service.delete(created_attendee)
 
         fail_message = "Test failed because the system returned an unknown attendee"
-        expected_exception_message = "Unknown Attendee id: " + str(created_attendee.id)
         helper.try_get_one_attendee_with_error(self, self.service, created_attendee.id, fail_message,
-                                               expected_exception_message)
+                                               AttendeeMessages(created_attendee.id).UNKNOWN_ID)
 
     def test14_delete_unknown_attendee(self):
         created_attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)

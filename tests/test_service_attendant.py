@@ -175,14 +175,12 @@ class TestAttendeeService(unittest.TestCase):
 
         self.service.delete(created_attendee)
         fail_message = "Test failed because the system accepted to delete attendee with an unknown id"
-        expected_exception_message = "Attendee id not found: " + str(self.UNKNOWN_ID)
 
         helper.try_delete_attendee_with_error(self, self.service, created_attendee, fail_message,
-                                              expected_exception_message)
+                                              AttendeeMessages(created_attendee.id).UNKNOWN_ID)
 
         fail_message = "Test failed because the system accepted to delete a null attendee"
-        expected_exception_message = "Null attendee"
-        helper.try_delete_attendee_with_error(self, self.service, None, fail_message, expected_exception_message)
+        helper.try_delete_attendee_with_error(self, self.service, None, fail_message, AttendeeMessages.NULL_ATTENDEE)
 
     def test15_three_attendees(self):
         attendee1 = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL)

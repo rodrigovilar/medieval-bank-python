@@ -47,6 +47,11 @@ class UnknownField(ErrorMessage, FieldError):
         self.message = f"Unknown {_class} with {field}: {field_value}"
 
 
+class NullInstance(ErrorMessage):
+    def __init__(self, _class):
+        self.message = f"Null {_class}"
+
+
 class AttendeeMessages(ErrorMessage):
     attendee_id = None
 
@@ -59,3 +64,4 @@ class AttendeeMessages(ErrorMessage):
     UNIQUE_NAME = UniqueField("Name").message
     WRONG_FORMAT_EMAIL = WrongRegexField("E-mail").message
     UNKNOWN_ID = UnknownField("ID", "Attendee", attendee_id).message
+    NULL_ATTENDEE = NullInstance("attendee").message

@@ -57,9 +57,13 @@ class AttendeeService:
         return attendeeAtual
 
     def delete(self, attendee):
-        attendee = self.get_one(attendee.id)
-        self._session.delete(attendee)
-        self._session.commit()
+        if attendee is not None:
+            attendee = self.get_one(attendee.id)
+            self._session.delete(attendee)
+            self._session.commit()
+        else:
+            raise MedievalBankException(AttendeeMessages.NULL_ATTENDEE)
+
 
     def get_all(self):
         pass

@@ -116,8 +116,10 @@ class TestAttendeeService(unittest.TestCase):
                                               fail_message, AttendeeMessages(attendee_with_unknown_id.id).UNKNOWN_ID)
 
         created_attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN)
-        created_attendee.id = self.UNKNOWN_ID
-        helper.try_update_attendee_with_error(self, self.service, attendee_with_unknown_id,
+        aux_attendee = Attendee(id=created_attendee.id, name=created_attendee.name, creation_date=created_attendee.creation_date,
+                                email=created_attendee.email, ssn=created_attendee.ssn)
+        aux_attendee.id = self.UNKNOWN_ID
+        helper.try_update_attendee_with_error(self, self.service, aux_attendee,
                                               fail_message, AttendeeMessages(created_attendee.id).UNKNOWN_ID)
 
     def test09_update_attendee_without_name(self):
@@ -131,37 +133,44 @@ class TestAttendeeService(unittest.TestCase):
     def test10_update_attendee_name_duplicated(self):
         helper.create_attendee(self.service, self.EX_NAME)
         attendee2 = helper.create_attendee(self.service, self.EX_OTHER_NAME)
-        attendee2.name = self.EX_NAME
+        aux_attendee = Attendee(id=attendee2.id, name=attendee2.name, creation_date=attendee2.creation_date,
+                                email=attendee2.email, ssn=attendee2.ssn)
+        aux_attendee.name = self.EX_NAME
 
         fail_message = "Test failed because the system accepted to update an attendee with an already existent name"
-        helper.try_update_attendee_with_error(self, self.service, attendee2, fail_message, AttendeeMessages.UNIQUE_NAME)
+        helper.try_update_attendee_with_error(self, self.service, aux_attendee, fail_message, AttendeeMessages.UNIQUE_NAME)
         
     def test11_update_attendee_with_automatic_field(self):
         created_attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)
+        aux_attendee = Attendee(id=created_attendee.id, name=created_attendee.name,
+                                creation_date=created_attendee.creation_date,
+                                email=created_attendee.email, ssn=created_attendee.ssn)
         sleep(0.01)
-        created_attendee.creation_date = datetime.now()
+        aux_attendee.creation_date = datetime.now()
 
         fail_message = "Test failed because the system accepted to update an attendee with an already existent name"
-        helper.try_update_attendee_with_error(self, self.service, created_attendee, fail_message,
+        helper.try_update_attendee_with_error(self, self.service, aux_attendee, fail_message,
                                               AttendeeMessages.IMMUTABLE_CREATION_DATE)
 
     def test12_update_attendee_with_invalid_email(self):
         attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)
+        aux_attendee = Attendee(id=attendee.id, name=attendee.name, creation_date=attendee.creation_date,
+                                email=attendee.email, ssn=attendee.ssn)
 
         fail_message = "Test failed because the system accepted to update attendee with invalid e-mail format"
         expected_exception_message = AttendeeMessages.WRONG_FORMAT_EMAIL
 
-        attendee.email = "sdsdfa.sds#"
-        helper.try_update_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
+        aux_attendee.email = "sdsdfa.sds#"
+        helper.try_update_attendee_with_error(self, self.service, aux_attendee, fail_message, expected_exception_message)
 
-        attendee.email = "sdsdfa@@gmail.com"
-        helper.try_update_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
+        aux_attendee.email = "sdsdfa@@gmail.com"
+        helper.try_update_attendee_with_error(self, self.service, aux_attendee, fail_message, expected_exception_message)
 
-        attendee.email = "sdsdfa#gmail.com"
-        helper.try_update_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
+        aux_attendee.email = "sdsdfa#gmail.com"
+        helper.try_update_attendee_with_error(self, self.service, aux_attendee, fail_message, expected_exception_message)
       
-        attendee.email = "sdsdfa@gmail"
-        helper.try_update_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
+        aux_attendee.email = "sdsdfa@gmail"
+        helper.try_update_attendee_with_error(self, self.service, aux_attendee, fail_message, expected_exception_message)
     
     def test13_delete_attendee(self):
         created_attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)

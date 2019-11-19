@@ -44,17 +44,35 @@ class AttendeeService:
         attendee = self._session.query(Attendee).get(attendee_id)
         if attendee is None:
             raise MedievalBankException(AttendeeMessages(attendee_id).UNKNOWN_ID)
-        self._session.expunge(attendee)
+        #self._session.expunge(attendee)
         return attendee
 
     def update(self, attendee):
-        attendeeAtual = self.get_one(attendee.id)
+        aux_attendee = Attendee(name=attendee.name, email=attendee.email, creation_date=attendee.creation_date,
+                                id=attendee.id, ssn=attendee.ssn)
+        self._session.rollback()
 
-        if attendeeAtual is None:
-            raise MedievalBankException("O obejeto não cadastrado!")
-        attendeeAtual.name = attendee.name
-        attendeeAtual.email = attendee.email
-        return attendeeAtual
+        if aux_attendee.name is None:
+            raise MedievalBankException(AttendeeMessages.NON_NULLABLE_NAME)
+
+        db_rep = self.get_one(attendee.id)
+        if db_rep.ssn != aux_attendee.ssn:
+            raise MedievalBankException(AttendeeMessages.IMMUTABLE_SSN)
+        elif aux_attendee.creation_date != db_rep.creation_date:
+            raise MedievalBankException(AttendeeMessages.IMMUTABLE_CREATION_DATE)
+        elif aux_attendee.id != db_rep.id:
+            raise MedievalBankException(AttendeeMessages.IMMUTABLE_ID)
+
+        elif aux_attendee.name != db_rep.name:
+            exists_by_name = self._session.query(Attendee).filter_by(name=aux_attendee.name)
+            if len(exists_by_name.all()) > 0:
+                raise MedievalBankException(AttendeeMessages.UNIQUE_NAME)
+
+        attendee.name = aux_attendee.name
+        attendee.email = aux_attendee.email
+
+        self._session.commit()
+        return attendee
 
     def delete(self, attendee):
         attendee = self.get_one(attendee.id)

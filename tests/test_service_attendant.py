@@ -99,8 +99,7 @@ class TestAttendeeService(unittest.TestCase):
         attendee.ssn = "385-42-9044"
 
         fail_message = "Test failed because the system accepted to update attendee with a new ssn"
-        expected_exception_message = "Attendee SSN is immutable"
-        helper.try_update_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
+        helper.try_update_attendee_with_error(self, self.service, attendee, fail_message, AttendeeMessages.IMMUTABLE_SSN)
 
     def test08_update_attendee_with_unknown_id(self):
         attendee_with_unknown_id = Attendee()
@@ -108,20 +107,21 @@ class TestAttendeeService(unittest.TestCase):
         attendee_with_unknown_id.id = self.UNKNOWN_ID
 
         fail_message = "Test failed because the system accepted to update attendee with an unknown ID"
-        expected_exception_message = "Attendee ID not found: " + str(self.UNKNOWN_ID)
         helper.try_update_attendee_with_error(self, self.service, attendee_with_unknown_id,
-                                              fail_message, expected_exception_message)
+                                              fail_message, AttendeeMessages(attendee_with_unknown_id.id).UNKNOWN_ID)
 
         created_attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN)
         created_attendee.id = self.UNKNOWN_ID
         helper.try_update_attendee_with_error(self, self.service, attendee_with_unknown_id,
-                                              fail_message, expected_exception_message)
+                                              fail_message, AttendeeMessages(created_attendee.id).UNKNOWN_ID)
 
     def test09_update_attendee_without_name(self):
         fail_message = "Test failed because the system accepted to update an attendee without name"
-        expected_exception_message = "Name is mandatory"
         attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN)
-        helper.try_update_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)
+        attendee.name = None
+
+        helper.try_update_attendee_with_error(self, self.service, attendee, fail_message,
+                                              AttendeeMessages.NON_NULLABLE_NAME)
 
     def test10_update_attendee_name_duplicated(self):
         helper.create_attendee(self.service, self.EX_NAME)
@@ -129,8 +129,7 @@ class TestAttendeeService(unittest.TestCase):
         attendee2.name = self.EX_NAME
 
         fail_message = "Test failed because the system accepted to update an attendee with an already existent name"
-        expected_exception_message = "Attendee name cannot be duplicated"
-        helper.try_update_attendee_with_error(self, self.service, attendee2, fail_message, expected_exception_message)
+        helper.try_update_attendee_with_error(self, self.service, attendee2, fail_message, AttendeeMessages.UNIQUE_NAME)
         
     def test11_update_attendee_WindthAutomaticField(self):
         created_attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)

@@ -56,6 +56,7 @@ class AttendeeMessages(ErrorMessage):
     NON_NULLABLE_NAME = NonNullableField("Name").message
     IMMUTABLE_ID = ImmutableField("ID").message
     IMMUTABLE_CREATION_DATE = ImmutableField("Creation Date").message
+    IMMUTABLE_SSN = ImmutableField("SSN").message
     UNIQUE_NAME = UniqueField("Name").message
     WRONG_FORMAT_EMAIL = WrongRegexField("E-mail").message
     UNKNOWN_ID = UnknownField("ID", "Attendee", attendee_id).message

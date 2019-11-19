@@ -55,6 +55,10 @@ class AttendeeService:
         if aux_attendee.name is None:
             raise MedievalBankException(AttendeeMessages.NON_NULLABLE_NAME)
 
+        if aux_attendee.email is not None:
+            if not re.match(self._MAIL_REGEX, aux_attendee.email):
+                raise MedievalBankException(AttendeeMessages.WRONG_FORMAT_EMAIL)
+
         db_rep = self.get_one(attendee.id)
         if db_rep.ssn != aux_attendee.ssn:
             raise MedievalBankException(AttendeeMessages.IMMUTABLE_SSN)

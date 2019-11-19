@@ -144,7 +144,7 @@ class TestAttendeeService(unittest.TestCase):
         attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)
 
         fail_message = "Test failed because the system accepted to update attendee with invalid e-mail format"
-        expected_exception_message = "Attendee e-mail format is invalid"
+        expected_exception_message = AttendeeMessages.WRONG_FORMAT_EMAIL
 
         attendee.email = "sdsdfa.sds#"
         helper.try_update_attendee_with_error(self, self.service, attendee, fail_message, expected_exception_message)

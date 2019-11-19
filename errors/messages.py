@@ -17,6 +17,11 @@ class FieldError:
     field = None
 
 
+class NullInstance(ErrorMessage):
+    def __init__(self, _class):
+        self.message = f"{_class} cannot be null"
+
+
 class NonNullableField(ErrorMessage, FieldError):
     def __init__(self, field):
         self.field = field
@@ -60,3 +65,4 @@ class AttendeeMessages(ErrorMessage):
     UNIQUE_NAME = UniqueField("Name").message
     WRONG_FORMAT_EMAIL = WrongRegexField("E-mail").message
     UNKNOWN_ID = UnknownField("ID", "Attendee", attendee_id).message
+    NULL_INSTANCE = NullInstance("Attendee").message

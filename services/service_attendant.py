@@ -75,6 +75,9 @@ class AttendeeService:
         return db_rep
 
     def delete(self, attendee):
+        if attendee is None:
+            raise MedievalBankException(AttendeeMessages.NULL_INSTANCE)
+
         attendee = self.get_one(attendee.id)
         self._session.delete(attendee)
         self._session.commit()

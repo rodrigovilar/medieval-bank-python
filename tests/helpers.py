@@ -46,7 +46,7 @@ class TestAttendeeServiceHelper:
     @staticmethod
     def try_delete_attendee_with_error(tester, service, attendee, fail_message, expected_exception_message):
         try:
-            service.update(attendee)
+            service.delete(attendee)
             tester.fail(fail_message)
         except MedievalBankException as e:
             tester.assertEquals(expected_exception_message, e.message)

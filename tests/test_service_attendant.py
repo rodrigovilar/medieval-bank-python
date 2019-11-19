@@ -131,15 +131,14 @@ class TestAttendeeService(unittest.TestCase):
         fail_message = "Test failed because the system accepted to update an attendee with an already existent name"
         helper.try_update_attendee_with_error(self, self.service, attendee2, fail_message, AttendeeMessages.UNIQUE_NAME)
         
-    def test11_update_attendee_WindthAutomaticField(self):
+    def test11_update_attendee_with_automatic_field(self):
         created_attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)
         sleep(0.01)
         created_attendee.creation_date = datetime.now()
 
         fail_message = "Test failed because the system accepted to update an attendee with an already existent name"
-        expected_exception_message = "Attendee name cannot be duplicated"
         helper.try_update_attendee_with_error(self, self.service, created_attendee, fail_message,
-                                              expected_exception_message)
+                                              AttendeeMessages.IMMUTABLE_CREATION_DATE)
 
     def test12_update_attendee_with_invalid_email(self):
         attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN,)

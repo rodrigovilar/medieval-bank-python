@@ -200,28 +200,29 @@ class TestAttendeeService(unittest.TestCase):
         attendee3 = helper.create_attendee(self.service, "Third Name")
 
         attendee_list = self.service.get_all()
-        self.assertEquals(3, attendee_list.size())
-        self.assertEquals(attendee1,attendee_list[0])
-        self.assertEquals(attendee2,attendee_list[1])
-        self.assertEquals(attendee3,attendee_list[2])
+
+        self.assertEquals(3, len(attendee_list))
+        self.assertEquals(attendee1, attendee_list[0])
+        self.assertEquals(attendee2, attendee_list[1])
+        self.assertEquals(attendee3, attendee_list[2])
 
     def test16_filter_attendees(self):
         attendee1 = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL)
         attendee2 = helper.create_attendee(self.service, self.EX_OTHER_NAME)
         attendee3 = helper.create_attendee(self.service, "Third Name")
 
-        attendee_list = self.service.find_by_name("Name")
-        self.assertEquals(1, attendee_list.size())
-        self.assertEquals(attendee3, attendee_list[0])
+        attendee_list = self.service.find_by_name("A Name")
+        self.assertEquals(1, len(attendee_list))
+        self.assertEquals(attendee1, attendee_list[0])
 
         attendee_list = self.service.find_by_name("Name")
-        self.assertEquals(3, attendee_list.size())
+        self.assertEquals(3, len(attendee_list))
         self.assertEquals(attendee1, attendee_list[0])
         self.assertEquals(attendee2, attendee_list[1])
         self.assertEquals(attendee3, attendee_list[2])
 
         attendee_list = self.service.find_by_name("Jhon")
-        self.assertEquals(0,attendee_list.size)
+        self.assertEquals(0, len(attendee_list))
 
 
 if __name__ == '__main__':

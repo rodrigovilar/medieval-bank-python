@@ -83,7 +83,9 @@ class AttendeeService:
         self._session.commit()
 
     def get_all(self):
-        pass
+        attendee_list = self._session.query(Attendee).all()
+        return attendee_list
 
     def find_by_name(self, name):
-        pass
+        attendee_list = self._session.query(Attendee).filter(Attendee.name.like(f"%{name}%")).all()
+        return attendee_list

@@ -44,39 +44,35 @@ class AttendeeService:
         attendee = self._session.query(Attendee).get(attendee_id)
         if attendee is None:
             raise MedievalBankException(AttendeeMessages(attendee_id).UNKNOWN_ID)
-        #self._session.expunge(attendee)
         return attendee
 
     def update(self, attendee):
-        aux_attendee = Attendee(name=attendee.name, email=attendee.email, creation_date=attendee.creation_date,
-                                id=attendee.id, ssn=attendee.ssn)
-        self._session.rollback()
 
-        if aux_attendee.name is None:
+        if attendee.name is None:
             raise MedievalBankException(AttendeeMessages.NON_NULLABLE_NAME)
 
-        if aux_attendee.email is not None:
-            if not re.match(self._MAIL_REGEX, aux_attendee.email):
+        if attendee.email is not None:
+            if not re.match(self._MAIL_REGEX, attendee.email):
                 raise MedievalBankException(AttendeeMessages.WRONG_FORMAT_EMAIL)
 
         db_rep = self.get_one(attendee.id)
-        if db_rep.ssn != aux_attendee.ssn:
+        if db_rep.ssn != attendee.ssn:
             raise MedievalBankException(AttendeeMessages.IMMUTABLE_SSN)
-        elif aux_attendee.creation_date != db_rep.creation_date:
+        elif attendee.creation_date != db_rep.creation_date:
             raise MedievalBankException(AttendeeMessages.IMMUTABLE_CREATION_DATE)
-        elif aux_attendee.id != db_rep.id:
+        elif attendee.id != db_rep.id:
             raise MedievalBankException(AttendeeMessages.IMMUTABLE_ID)
 
-        elif aux_attendee.name != db_rep.name:
-            exists_by_name = self._session.query(Attendee).filter_by(name=aux_attendee.name)
+        elif attendee.name != db_rep.name:
+            exists_by_name = self._session.query(Attendee).filter_by(name=attendee.name)
             if len(exists_by_name.all()) > 0:
                 raise MedievalBankException(AttendeeMessages.UNIQUE_NAME)
 
-        attendee.name = aux_attendee.name
-        attendee.email = aux_attendee.email
+        db_rep.name = attendee.name
+        db_rep.email = attendee.email
 
         self._session.commit()
-        return attendee
+        return db_rep
 
     def delete(self, attendee):
         attendee = self.get_one(attendee.id)

@@ -83,10 +83,13 @@ class TestAttendeeService(unittest.TestCase):
         new_email = "new@mail.com"
 
         attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL)
-        attendee.name = self.EX_OTHER_NAME
-        attendee.email = new_email
+        aux_attendee = Attendee(id=attendee.id, name=attendee.name, creation_date=attendee.creation_date,
+                                email=attendee.email, ssn=attendee.ssn)
 
-        updated_attendee = self.service.update(attendee)
+        aux_attendee.name = self.EX_OTHER_NAME
+        aux_attendee.email = new_email
+
+        updated_attendee = self.service.update(aux_attendee)
         helper.validate_attendee_creation(self, self.EX_OTHER_NAME, updated_attendee, new_email)
         self.assertEquals(updated_attendee.id, attendee.id)
         self.assertEquals(updated_attendee.creation_date, attendee.creation_date)
@@ -96,14 +99,16 @@ class TestAttendeeService(unittest.TestCase):
 
     def test07_update_attendee_with_immutable_fields(self):
         attendee = helper.create_attendee(self.service, self.EX_NAME, self.EX_EMAIL, self.EX_SSN)
-        attendee.ssn = "385-42-9044"
+        aux_attendee = Attendee(id=attendee.id, name=attendee.name, creation_date=attendee.creation_date,
+                                email=attendee.email, ssn=attendee.ssn)
+        aux_attendee.ssn = "385-42-9044"
 
         fail_message = "Test failed because the system accepted to update attendee with a new ssn"
-        helper.try_update_attendee_with_error(self, self.service, attendee, fail_message, AttendeeMessages.IMMUTABLE_SSN)
+        helper.try_update_attendee_with_error(self, self.service, aux_attendee, fail_message, AttendeeMessages.IMMUTABLE_SSN)
 
     def test08_update_attendee_with_unknown_id(self):
         attendee_with_unknown_id = Attendee()
-
+        attendee_with_unknown_id.name = self.EX_NAME
         attendee_with_unknown_id.id = self.UNKNOWN_ID
 
         fail_message = "Test failed because the system accepted to update attendee with an unknown ID"

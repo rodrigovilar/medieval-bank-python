@@ -5,7 +5,6 @@ from datetime import datetime
 from persistence import db_path
 
 engine = create_engine('sqlite:///' + db_path, echo=False)
-Session = sessionmaker(bind=engine)
 Base = declarative_base()
 
 
@@ -18,6 +17,25 @@ class Attendee(Base):
     creation_date = Column('creation_date', DateTime, default=datetime.utcnow, nullable=False)
     email = Column('email', String(255))
     ssn = Column('ssn', String(255))
+
+    def __eq__(self, other):
+        if other is None and self is not None:
+            return False
+        elif other is not None and self is None:
+            return False
+        else:
+            if other.name != self.name:
+                return False
+            elif other.email != self.email:
+                return False
+            elif self.creation_date != other.creation_date:
+                return False
+            elif self.id != other.id:
+                return False
+            elif self.ssn != other.ssn:
+                return False
+
+        return True
 
 
 def initiate_engine_session_base(engine_path, echo=True):

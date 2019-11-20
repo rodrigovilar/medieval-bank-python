@@ -7,6 +7,8 @@ import re
 
 Session = sessionmaker(bind=engine)
 
+# refactor do helper, extract method nas validações do update e create
+
 
 class AttendeeService:
     _session = None
@@ -22,13 +24,14 @@ class AttendeeService:
         if not attendee.name:
             raise MedievalBankException(AttendeeMessages.NON_NULLABLE_NAME)
 
+        # Investigar se dá pra fazer de forma melhor
         exists_by_name = self._session.query(Attendee).filter_by(name=attendee.name)
         if len(exists_by_name.all()) > 0:
             raise MedievalBankException(AttendeeMessages.UNIQUE_NAME)
 
         if attendee.id is not None:
             raise MedievalBankException(AttendeeMessages.IMMUTABLE_ID)
-        elif attendee.creation_date is not None:
+        if attendee.creation_date is not None:
             raise MedievalBankException(AttendeeMessages.IMMUTABLE_CREATION_DATE)
 
         if attendee.email is not None:
@@ -55,24 +58,24 @@ class AttendeeService:
             if not re.match(self._MAIL_REGEX, attendee.email):
                 raise MedievalBankException(AttendeeMessages.WRONG_FORMAT_EMAIL)
 
-        db_rep = self.get_one(attendee.id)
-        if db_rep.ssn != attendee.ssn:
+        old_attendee = self.get_one(attendee.id)
+        if old_attendee.ssn != attendee.ssn:
             raise MedievalBankException(AttendeeMessages.IMMUTABLE_SSN)
-        elif attendee.creation_date != db_rep.creation_date:
+        if attendee.creation_date != old_attendee.creation_date:
             raise MedievalBankException(AttendeeMessages.IMMUTABLE_CREATION_DATE)
-        elif attendee.id != db_rep.id:
+        if attendee.id != old_attendee.id:
             raise MedievalBankException(AttendeeMessages.IMMUTABLE_ID)
 
-        elif attendee.name != db_rep.name:
+        if attendee.name != old_attendee.name:
             exists_by_name = self._session.query(Attendee).filter_by(name=attendee.name)
             if len(exists_by_name.all()) > 0:
                 raise MedievalBankException(AttendeeMessages.UNIQUE_NAME)
 
-        db_rep.name = attendee.name
-        db_rep.email = attendee.email
+        old_attendee.name = attendee.name
+        old_attendee.email = attendee.email
 
         self._session.commit()
-        return db_rep
+        return old_attendee
 
     def delete(self, attendee):
         if attendee is None:

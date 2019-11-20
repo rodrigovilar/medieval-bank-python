@@ -5,7 +5,6 @@ from datetime import datetime
 from persistence import db_path
 
 engine = create_engine('sqlite:///' + db_path, echo=False)
-Session = sessionmaker(bind=engine)
 Base = declarative_base()
 
 

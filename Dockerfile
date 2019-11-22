@@ -1,23 +1,14 @@
 #publicly available docker image "python with python 3.6.9" on docker hub will be pulled
 FROM python:3.6.9
 
-# creating directory pyuser in home folder in container (linux machine)
-RUN mkdir /home/pyuser
+# creating necessary folders in container (linux machine)
+RUN mkdir /home/pyuser/
 
-# cd into created dir
-RUN cd /home/pyuser
+RUN mkdir /home/pyuser/medieval-bank-python
 
 # clone repository
-CMD git clone https://github.com/rodrigovilar/medieval-bank-python
-
-# cd into repository
-RUN cd medieval-bank-python
+RUN git clone https://github.com/rodrigovilar/medieval-bank-python /home/pyuser/medieval-bank-python/
 
 # running pip to install all requirements
-CMD pip install -r requirements.txt
+RUN pip install -r /home/pyuser/medieval-bank-python/requirements.txt
 
-# running python to create database (It must be exec as a module or there will be import errors)
-CMD python -m persistence.models
-
-# running the test (Also as a module)
-CMD python -m tests.test_service_attendant

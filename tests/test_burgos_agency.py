@@ -6,7 +6,6 @@ class TestBurgosAgency(unittest.TestCase):
 
     def test_initialConfig(self):
         service = AgencyService()
-        service = AgencyService()
         service.setName("Burgosland")
         self.assertEqual("Burgosland", service.getName())
         service.setManager("Joseph")

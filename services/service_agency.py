@@ -27,10 +27,10 @@ class AgencyService:
         self._attendee_service = attendee_service
 
     @staticmethod
-    def setName(name):
-        agency_service.name = name
+    def setName(self,name):
+        self.name = name
 
 
     @staticmethod
-    def setManager(manager):
-        agency_service.manager = manager
+    def setManager(self, manager):
+        self.manager = manager

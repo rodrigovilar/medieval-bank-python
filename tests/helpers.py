@@ -18,7 +18,7 @@ class TestAttendeeServiceHelper:
         attendee.ssn = ssn
         return self.service.create(attendee)
 
-  
+
 
     def validate_attendee_creation(self, name, created_attendee, email=None):
         self.tester.assertIsNotNone(created_attendee.id)

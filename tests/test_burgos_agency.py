@@ -1,15 +1,18 @@
 import unittest
 
-from burgos_agency import BurgosAgency
+from burgos_agency import AgencyService
 
 class TestBurgosAgency(unittest.TestCase):
 
     def test_initialConfig(self):
-        BurgosAgency.setName("Burgosland")
-        self.assertEqual("Burgosland", BurgosAgency.getName())
-        BurgosAgency.setManager("Joseph")
-        self.assertEqual("Joseph", BurgosAgency.getManager())
+        AgencyService service = AgencyService()
+        service = AgencyService()
+        service.setName("Burgosland")
+        self.assertEqual("Burgosland", service.getName())
+        service.setManager("Joseph")
+        self.assertEqual("Joseph", service.getManager())
+
 
 if __name__ == '__main__':
     unittest.main()
-    
+

@@ -1,20 +1,18 @@
-class BurgosAgency:
+class AgencyService:
 
     name = None
     manager = None
+    atendee = []
 
-    @staticmethod
-    def setName(name):
-        BurgosAgency.name = name
 
-    @staticmethod
-    def getName():
-        return BurgosAgency.name
+    def setName(self, name):
+        self.name = name
 
-    @staticmethod
-    def setManager(manager):
-        BurgosAgency.manager = manager
+    def getName(self):
+        return self.name
 
-    @staticmethod
-    def getManager():
-        return BurgosAgency.manager
+    def setManager(self, manager):
+        self.manager = manager
+
+    def getManager(self):
+        return self.manager

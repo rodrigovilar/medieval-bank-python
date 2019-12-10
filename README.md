@@ -11,6 +11,6 @@ To create the database in the container:
 docker run -it bank-python bash -c "cd /home/pyuser/medieval-bank-python && python -m persistence.models"
 
 To run dockerized tests:
-docker run -it bank-python bash -c "cd /home/pyuser/medieval-bank-python && python -m tests.test_service_attendant"
+docker run -it bank-python bash -c "cd /home/pyuser/medieval-bank-python && python -m persistence.models && python -m tests.test_service_attendant"
 
 just change `test_service_attendant` to the name of the file that contains the tests you wanna run (**without the file extension**)

@@ -3,7 +3,6 @@ from persistence.models import Attendee, engine
 from sqlalchemy.orm import sessionmaker
 from errors.exceptions import MedievalBankException
 from errors.messages import AttendeeMessages
-import re
 
 Session = sessionmaker(bind=engine)
 
@@ -16,12 +15,7 @@ class AgencyService:
     _attendee_service = None
     name = None
     manager = None
-    Atendees = []
-    Queue = []
 
-    def create(self,attendee):
-        self.Atendees.append(attendee.name)
-        self.status()
 
     def open_session(self):
         self._session = Session()
@@ -32,15 +26,13 @@ class AgencyService:
     def __init__(self, attendee_service):
         self._attendee_service = attendee_service
 
-    @staticmethod
     def setName(self,name):
         self.name = name
 
 
-    @staticmethod
     def setManager(self, manager):
         self.manager = manager
 
     def status(self):
-        return("Atendees: [",self.Atendees,"]\n Queue: [",self.Queue,"]")
+        return("Atendees: [",self._attendee_service_all(),"]\n Queue: []")
 

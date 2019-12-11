@@ -1,6 +1,6 @@
 import unittest
 
-from service_agency import AgencyService
+from services.service_agency import AgencyService
 
 import unittest
 from datetime import datetime
@@ -28,6 +28,7 @@ class TestServiceAgency(unittest.TestCase):
     UNKNOWN_ID = 202020
 
 
+
     def setUp(self):
         self.service_atendee.open_session()
 
@@ -35,15 +36,15 @@ class TestServiceAgency(unittest.TestCase):
         tear_down_test_db()
         self.service_atendee.close_session()
 
-    def test01_agency_status(self):
-        result = self.getStatus() # Criar meth getStatus
-        # CRIAR assertEqual 
+    #def test_initialConfig(self):
+    #    self.setName("Burgosland")
+     #   self.assertEqual("Burgosland", self.getName())
+      #  self.setManager("Joseph")
+       # self.assertEqual("Joseph", self.getManager())
 
-    def test_initialConfig(self):
-        self.setName("Burgosland")
-        self.assertEqual("Burgosland", self.getName())
-        self.setManager("Joseph")
-        self.assertEqual("Joseph", self.getManager())
+    def createAgency(self,attendee):
+        self._attendee_service.create(attendee)
+        self.status()
 
 if __name__ == '__main__':
     unittest.main()

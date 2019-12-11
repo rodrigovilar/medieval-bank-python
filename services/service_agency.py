@@ -16,8 +16,12 @@ class AgencyService:
     _attendee_service = None
     name = None
     manager = None
-    atendee = []
-    queue = []
+    Atendees = []
+    Queue = []
+
+    def create(self,attendee):
+        self.Atendees.append(attendee.name)
+        self.status()
 
     def open_session(self):
         self._session = Session()
@@ -36,3 +40,7 @@ class AgencyService:
     @staticmethod
     def setManager(self, manager):
         self.manager = manager
+
+    def status(self):
+        return("Atendees: [",self.Atendees,"]\n Queue: [",self.Queue,"]")
+

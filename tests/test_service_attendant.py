@@ -6,6 +6,7 @@ from persistence.models import Attendee, Base, tear_down_test_db
 from errors.messages import AttendeeMessages
 from time import sleep
 
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker

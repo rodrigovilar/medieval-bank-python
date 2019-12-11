@@ -16,6 +16,8 @@ class AgencyService:
     _attendee_service = None
     name = None
     manager = None
+    atendee = []
+    queue = []
 
     def open_session(self):
         self._session = Session()

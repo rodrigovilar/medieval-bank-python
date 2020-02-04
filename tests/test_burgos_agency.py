@@ -4,6 +4,8 @@ from burgos_agency import AgencyService
 
 class TestBurgosAgency(unittest.TestCase):
 
+    agency = AgencyService
+
     def test_initialConfig(self):
         service = AgencyService()
         service = AgencyService()
@@ -11,6 +13,10 @@ class TestBurgosAgency(unittest.TestCase):
         self.assertEqual("Burgosland", service.getName())
         service.setManager("Joseph")
         self.assertEqual("Joseph", service.getManager())
+
+    def emptyStatusAndQueue(self):
+        self.agency.getstatus()
+        self.agency.getqueue()
 
 
 if __name__ == '__main__':

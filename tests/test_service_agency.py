@@ -36,14 +36,14 @@ class TestServiceAgency(unittest.TestCase):
         self.service_atendee.close_session()
 
     def test01_agency_status(self):
-        result = service_agency.getStatus() # Criar meth getStatus
+        result = self.service_agency.getStatus() # Criar meth getStatus
         # CRIAR assertEqual 
 
     def test_initialConfig(self):
-        service_agency.setName("Burgosland")
-        self.assertEqual("Burgosland", service_agency.getName())
-        service_agency.setManager("Joseph")
-        self.assertEqual("Joseph", service_agency.getManager())
+        self.service_agency.setName("Burgosland")
+        self.assertEqual("Burgosland", self.service_agency.getName())
+        self.service_agency.setManager("Joseph")
+        self.assertEqual("Joseph", self.service_agency.getManager())
 
 if __name__ == '__main__':
     unittest.main()

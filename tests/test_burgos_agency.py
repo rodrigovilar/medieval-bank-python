@@ -5,6 +5,8 @@ from services.service_attendant import AttendeeService
 
 class TestBurgosAgency(unittest.TestCase):
 
+    agency = AgencyService
+
     def test_initialConfig(self):
         service = AgencyService()
         service.setName("Burgosland")
@@ -20,10 +22,6 @@ class TestBurgosAgency(unittest.TestCase):
         attendee3 = self.helper.create_attendee("A3")
 
         self.assertEquals(agency_service.status, "Attendees: [A1, A2, A3]\nQueue: []")
-
-
-
-
 
 
 if __name__ == '__main__':

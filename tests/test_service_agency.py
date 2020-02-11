@@ -36,15 +36,15 @@ class TestServiceAgency(unittest.TestCase):
         tear_down_test_db()
         self.service_atendee.close_session()
 
-    #def test_initialConfig(self):
-    #    self.setName("Burgosland")
-     #   self.assertEqual("Burgosland", self.getName())
-      #  self.setManager("Joseph")
-       # self.assertEqual("Joseph", self.getManager())
+    def test01_agency_status(self):
+        result = self.service_agency.getStatus() # Criar meth getStatus
+        # CRIAR assertEqual 
 
-    def createAgency(self,attendee):
-        self._attendee_service.create(attendee)
-        self.status()
+    def test_initialConfig(self):
+        self.service_agency.setName("Burgosland")
+        self.assertEqual("Burgosland", self.service_agency.getName())
+        self.service_agency.setManager("Joseph")
+        self.assertEqual("Joseph", self.service_agency.getManager())
 
 if __name__ == '__main__':
     unittest.main()

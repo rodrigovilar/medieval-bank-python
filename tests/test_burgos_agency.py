@@ -1,6 +1,6 @@
 import unittest
 
-from burgos_agency import AgencyService
+from services.burgos_agency import AgencyService
 
 class TestBurgosAgency(unittest.TestCase):
 

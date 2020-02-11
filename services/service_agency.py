@@ -16,6 +16,8 @@ class AgencyService:
     _attendee_service = None
     name = None
     manager = None
+    atendee = []
+
 
     def open_session(self):
         self._session = Session()
@@ -27,10 +29,13 @@ class AgencyService:
         self._attendee_service = attendee_service
 
     @staticmethod
-    def setName(name):
-        agency_service.name = name
+    def setName(self, name):
+        self.agency_service.name = name
 
 
     @staticmethod
-    def setManager(manager):
-        agency_service.manager = manager
+    def setManager(self, manager):
+        self.agency_service.manager = manager
+
+    def getStatus(self):
+        return "Atendees: []\n Queue: []"

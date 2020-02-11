@@ -1,8 +1,8 @@
 import unittest
 
-from service_agency import AgencyService
+from services.service_agency import AgencyService
 
-import unittest
+import unittestg
 from datetime import datetime
 from services.service_attendant import AttendeeService
 from .helpers import TestAttendeeServiceHelper as helper
@@ -37,7 +37,7 @@ class TestServiceAgency(unittest.TestCase):
 
     def test01_agency_status(self):
         result = self.service_agency.getStatus() # Criar meth getStatus
-        # CRIAR assertEqual 
+        self.assertEquals(result, "Atendees: []\n Queue: []")
 
     def test_initialConfig(self):
         self.service_agency.setName("Burgosland")

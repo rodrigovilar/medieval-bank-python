@@ -17,9 +17,4 @@ class AgencyService:
     def getManager(self):
         return self.manager
 
-    def getStatus(self):
-        return "Atendees: []\n Queue[]"
 
-    #def getQueue(self):
-     #   queue = []
-      #  return queue

@@ -71,3 +71,17 @@ class AttendeeMessages(ErrorMessage):
     WRONG_FORMAT_EMAIL = WrongRegexField("E-mail").message
     UNKNOWN_ID = UnknownField("ID", "Attendee", attendee_id).message
     NULL_INSTANCE = NullInstance("Attendee").message
+
+
+class DemandMessages(ErrorMessage):
+    demand_id = None
+
+    def __init__(self, demand_id=None):
+        self.attendee_id = demand_id
+
+    NON_NULLABLE_NAME = NonNullableField("Name").message
+    IMMUTABLE_ID = ImmutableField("ID").message
+    IMMUTABLE_CREATION_DATE = ImmutableField("Creation Date").message
+    UNIQUE_NAME = UniqueField("Name").message
+    UNKNOWN_ID = UnknownField("ID", "Demand", demand_id).message
+    NULL_INSTANCE = NullInstance("Demand").message

@@ -1,6 +1,6 @@
 import unittest
 
-from service_agency import AgencyService
+from services.service_agency import AgencyService
 
 import unittest
 from datetime import datetime
@@ -37,11 +37,11 @@ class TestServiceAgency(unittest.TestCase):
 
     def test01_agency_status(self):
         result = self.service_agency.getStatus() # Criar meth getStatus
-        # CRIAR assertEqual 
+        self.assertEquals(result, "Atendees: []\n Queue[]")
 
     def test_initialConfig(self):
         self.service_agency.setName("Burgosland")
-        self.assertEqual("Burgosland", self.service_agency.getName())
+        self.service_atendee.assertEqual("Burgosland", self.service_agency.getName())
         self.service_agency.setManager("Joseph")
         self.assertEqual("Joseph", self.service_agency.getManager())
 

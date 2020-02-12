@@ -50,10 +50,13 @@ class AgencyService:
 
     #Não sei como criar um atendee aqui
     def setDemandToAtendee(self, demand, atendeeId):
+        return ""
 
     def getStatusWhithTicks:
+        return ""
 
-    def getStatus:
+    def getStatus(self):
+        return "Atendees: []\n Queue[]"
 
     def setName(self, name):
         self._session.nome = name

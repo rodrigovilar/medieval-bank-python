@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, String, create_engine, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, create_engine, DateTime
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 from persistence import db_path
 
@@ -13,15 +13,10 @@ class Attendee(Base):
     __tablename__ = 'attendee_db'
 
     id = Column(Integer, primary_key=True)
-#    demand = relationship("Demand", uselist=False, back_populates="attendee_db")
     name = Column('name', String(255), nullable=False, unique=True)
     creation_date = Column('creation_date', DateTime, default=datetime.utcnow, nullable=False)
     email = Column('email', String(255))
     ssn = Column('ssn', String(255))
-
-    ## SetDemand
-
-    ## GetDemand
 
     def __eq__(self, other):
         if other is None and self is not None:
@@ -40,31 +35,6 @@ class Attendee(Base):
             elif self.ssn != other.ssn:
                 return False
 
-        return True
-
-
-#class Demand(Base):
-#    """Each class represents a database table"""
-#    __tablename__ = 'demand_db'
-
-#    id = Column(Integer, primary_key=True)
-#    attendee_id = Column(Integer, ForeignKey('attendee.id'))
-#    demand = relationship("Attendee", back_populates="demand")
-#    name = Column('name', String(255), nullable=False, unique=True)
-#    creation_date = Column('creation_date', DateTime, default=datetime.utcnow, nullable=False)
-
-    def __eq__(self, other):
-        if other is None and self is not None:
-            return False
-        elif other is not None and self is None:
-            return False
-        else:
-            if other.name != self.name:
-                return False
-            elif self.creation_date != other.creation_date:
-                return False
-            elif self.id != other.id:
-                return False
         return True
 
 

@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, String, create_engine, DateTime
+from sqlalchemy import Column, Integer, String, create_engine, DateTime, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, relationship
 from datetime import datetime
 from persistence import db_path
 
@@ -13,6 +13,7 @@ class Attendee(Base):
     __tablename__ = 'attendee_db'
 
     id = Column(Integer, primary_key=True)
+    demand = relationship("Demand", uselist=False, back_populates="attendee_db")
     name = Column('name', String(255), nullable=False, unique=True)
     creation_date = Column('creation_date', DateTime, default=datetime.utcnow, nullable=False)
     email = Column('email', String(255))
@@ -42,12 +43,13 @@ class Attendee(Base):
         return True
 
 
-# Acredito que isso seja a criação do banco de demandas
-
 class Demand(Base):
     """Each class represents a database table"""
     __tablename__ = 'demand_db'
+
     id = Column(Integer, primary_key=True)
+    attendee_id = Column(Integer, ForeignKey('attendee.id'))
+    demand = relationship("Attendee", back_populates="demand")
     name = Column('name', String(255), nullable=False, unique=True)
     creation_date = Column('creation_date', DateTime, default=datetime.utcnow, nullable=False)
 

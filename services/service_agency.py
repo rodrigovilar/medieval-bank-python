@@ -15,6 +15,7 @@ class AgencyService:
     _session = None
     _attendee_service = None
     _demand_service = None
+    _agency_service = None
     name = None
     manager = None
     tick = 0
@@ -29,17 +30,17 @@ class AgencyService:
         self._attendee_service = attendee_service
         self._demand_service = demand_service
 
-    @staticmethod
+
     def resetTick(self):
-        agency_service.tick = 0
+        self._session.tick = 0
 
-    @staticmethod
+
     def increaseTick(self):
-        agency_service.tick += 1
+        self._session.tick += 1
 
-    @staticmethod
+
     def getTick(self):
-        return agency_service.tick
+        return self._session.tick
 
     def createDemand(self, demand):
         self._demand_service.create(demand)
@@ -49,35 +50,13 @@ class AgencyService:
 
     #Não sei como criar um atendee aqui
     def setDemandToAtendee(self, demand, atendeeId):
-        #Demand demand
-        #Atendee atendee
-        #atendee = _attendee_service.get_one(atendeeId)
-        #atendee.setDemand(demand)
-
-        #demand.setAllocated(true)
-        #demand.setAtendee(atendee)
-        #_demand_service.update(demand)
-
-        #_attendee_service.update(atendee)
 
     def getStatusWhithTicks:
-        #List < Atendee > listOfTheAteendes = atendeeService.getAll();
-        #List < Demand > listOfTheDemands = demandService.getAll();
-
-        #return "Atendees: " + listOfTheAteendes + "\n" + "Queue: " + listOfTheDemands + "\n" + "Tick must return: "+ this.getTick();
-
 
     def getStatus:
-        #List < Atendee > listOfTheAteendes = atendeeService.getAll();
-        #List < Demand > listOfTheDemands = demandService.getAllUnallocated();
 
-        #return "Atendees: " + listOfTheAteendes + "\n" + "Queue: " + listOfTheDemands;
+    def setName(self, name):
+        self._session.nome = name
 
-
-    @staticmethod
-    def setName(name):
-        agency_service.name = name
-
-    @staticmethod
-    def setManager(manager):
-        agency_service.manager = manager
+    def setManager(self, manager):
+        self._session.manager = manager

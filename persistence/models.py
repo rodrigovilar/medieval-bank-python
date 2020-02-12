@@ -13,7 +13,7 @@ class Attendee(Base):
     __tablename__ = 'attendee_db'
 
     id = Column(Integer, primary_key=True)
-    demand = relationship("Demand", uselist=False, back_populates="attendee_db")
+#    demand = relationship("Demand", uselist=False, back_populates="attendee_db")
     name = Column('name', String(255), nullable=False, unique=True)
     creation_date = Column('creation_date', DateTime, default=datetime.utcnow, nullable=False)
     email = Column('email', String(255))
@@ -43,15 +43,15 @@ class Attendee(Base):
         return True
 
 
-class Demand(Base):
-    """Each class represents a database table"""
-    __tablename__ = 'demand_db'
+#class Demand(Base):
+#    """Each class represents a database table"""
+#    __tablename__ = 'demand_db'
 
-    id = Column(Integer, primary_key=True)
-    attendee_id = Column(Integer, ForeignKey('attendee.id'))
-    demand = relationship("Attendee", back_populates="demand")
-    name = Column('name', String(255), nullable=False, unique=True)
-    creation_date = Column('creation_date', DateTime, default=datetime.utcnow, nullable=False)
+#    id = Column(Integer, primary_key=True)
+#    attendee_id = Column(Integer, ForeignKey('attendee.id'))
+#    demand = relationship("Attendee", back_populates="demand")
+#    name = Column('name', String(255), nullable=False, unique=True)
+#    creation_date = Column('creation_date', DateTime, default=datetime.utcnow, nullable=False)
 
     def __eq__(self, other):
         if other is None and self is not None:

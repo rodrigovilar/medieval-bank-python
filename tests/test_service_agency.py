@@ -35,14 +35,28 @@ class TestServiceAgency(unittest.TestCase):
         tear_down_test_db()
         self.service_atendee.close_session()
 
-    def test01_agency_status(self):
+    def test14_agency_status(self):
         result = self.service_agency.getStatus() # Criar meth getStatus
         self.assertEquals(result, "Atendees: []\n Queue: []")
 
-    def test02_return_one(self):
+    def test17_return_one(self):
         service_atendee = self.service_atendee
-        service_atendee.create("A1")
+        service_atendee.helper.create_attendee("A1")
         self.assertEquals(self.service_agency.getStatus(),"Atendees: [A1]\n Queue: []" )
+
+    def test20_return_three(self):
+        service_atendee = self.service_atendee
+        attendee1 = service_atendee.helper.create_attendee("A1")
+        attendee2 = service_atendee.helper.create_attendee("A2")
+        attendee3 = service_atendee.helper.create_attendee("A3")
+
+        attendee_list = self.service.get_all()
+
+        self.assertEquals(3, len(attendee_list))
+        self.assertEquals(attendee1, attendee_list[0])
+        self.assertEquals(attendee2, attendee_list[1])
+        self.assertEquals(attendee3, attendee_list[2])
+        self.assertEquals(self.service_agency.getStatus(),"Atendees: [A1,A2,A3]\n Queue: []" )
 
     def test_initialConfig(self):
         self.service_agency.setName("Burgosland")

@@ -58,11 +58,10 @@ class AgencyService:
 
 
     def getStatus(self):
-        if not self._attendee_service.get_one(1):
+        if not self._attendee_service.get_all():
             return "Atendees: []\n Queue: []"
         else:
-            return "Atendees: ", self._attendee_service.get_one(1), "\n Queue: []"
-
+            return "Atendees: ", self._attendee_service.get_all(), "\n Queue: []"
 
     def setName(self, name):
         self._session.nome = name

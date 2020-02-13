@@ -1,5 +1,7 @@
 from sqlalchemy import Column, Integer, String, create_engine, DateTime
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy import Column, Integer, String, create_engine, DateTime, ForeignKey
 from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 from persistence import db_path
@@ -14,10 +16,10 @@ class Attendee(Base):
 
     id = Column(Integer, primary_key=True)
     name = Column('name', String(255), nullable=False, unique=True)
+    demand = relationship("Demand", uselist=False, back_populates="attendee_db")
     creation_date = Column('creation_date', DateTime, default=datetime.utcnow, nullable=False)
     email = Column('email', String(255))
     ssn = Column('ssn', String(255))
-
     def __eq__(self, other):
         if other is None and self is not None:
             return False
@@ -37,6 +39,14 @@ class Attendee(Base):
 
         return True
 
+
+class Demand(Base):
+    __tablename__ = 'demand_db'
+    id = Column(Integer, primary_key=True)
+    attendee_id = Column(Integer, ForeignKey('attendee.id'))
+    demand = relationship("Attendee", back_populates="demand")
+    name = Column('name', String(255), nullable=False, unique=True)
+    creation_date = Column('creation_date', DateTime, default=datetime.utcnow, nullable=False)
 
 def initiate_engine_session_base(engine_path, echo=True):
     _engine = create_engine('sqlite:///' + engine_path, echo=echo)

@@ -1,6 +1,7 @@
 from datetime import datetime
+from services.service_attendant import AttendeeService
 from persistence.models import Attendee, engine
-from persistence.models import Demand, engine
+#from persistence.models import Demand, engine
 from sqlalchemy.orm import sessionmaker
 from errors.exceptions import MedievalBankException
 from errors.messages import AttendeeMessages
@@ -13,12 +14,13 @@ Session = sessionmaker(bind=engine)
 
 class AgencyService:
     _session = None
-    _attendee_service = None
+    _attendee_service = AttendeeService()
     _demand_service = None
     _agency_service = None
     name = None
     manager = None
     tick = 0
+    attendees = []
 
     def open_session(self):
         self._session = Session()
@@ -52,11 +54,15 @@ class AgencyService:
     def setDemandToAtendee(self, demand, atendeeId):
         return ""
 
-    def getStatusWhithTicks:
-        return ""
+    def getStatusWithTicks(self):
+
 
     def getStatus(self):
-        return "Atendees: []\n Queue[]"
+        if not self._attendee_service.get_one(1):
+            return "Atendees: []\n Queue: []"
+        else:
+            return "Atendees: ", self._attendee_service.get_one(1), "\n Queue: []"
+
 
     def setName(self, name):
         self._session.nome = name

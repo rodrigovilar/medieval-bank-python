@@ -37,7 +37,12 @@ class TestServiceAgency(unittest.TestCase):
 
     def test01_agency_status(self):
         result = self.service_agency.getStatus() # Criar meth getStatus
-        self.assertEquals(result, "Atendees: []\n Queue[]")
+        self.assertEquals(result, "Atendees: []\n Queue: []")
+
+    def test02_return_one(self):
+        service_atendee = self.service_atendee
+        service_atendee.create("A1")
+        self.assertEquals(self.service_agency.getStatus(),"Atendees: [A1]\n Queue: []" )
 
     def test_initialConfig(self):
         self.service_agency.setName("Burgosland")
